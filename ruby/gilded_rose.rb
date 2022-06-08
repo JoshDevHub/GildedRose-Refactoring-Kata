@@ -92,7 +92,7 @@ class DefaultUpdater < ItemUpdater
     return if item.quality <= 0
 
     item.quality -= 1
-    item.quality -= 1 if item.sell_in <= 0
+    item.quality -= 1 if item.sell_in <= 0 && item.quality.positive?
   end
 end
 
@@ -108,5 +108,6 @@ class ConjuredUpdater < ItemUpdater
 
     item.quality -= 2
     item.quality -= 2 if item.sell_in <= 0
+    item.quality = 0 if item.quality <= 0
   end
 end
