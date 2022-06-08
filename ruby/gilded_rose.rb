@@ -31,8 +31,9 @@ end
 # item updater class
 class ItemUpdater
   def self.for(item)
-    [BrieUpdater, BackstageUpdater, ItemUpdater, DefaultUpdater]
-      .find { |updater| updater.handles?(item.name) }
+    default = -> { DefaultUpdater }
+    [BrieUpdater, BackstageUpdater, ItemUpdater, ConjuredUpdater]
+      .find(default) { |updater| updater.handles?(item.name) }
       .new(item)
   end
 
@@ -92,5 +93,20 @@ class DefaultUpdater < ItemUpdater
 
     item.quality -= 1
     item.quality -= 1 if item.sell_in <= 0
+  end
+end
+
+# new conjured item updater
+class ConjuredUpdater < ItemUpdater
+  def self.handles?(name)
+    name == 'Conjured Mana Cake'
+  end
+
+  def update
+    item.sell_in -= 1
+    return if item.quality <= 0
+
+    item.quality -= 2
+    item.quality -= 2 if item.sell_in <= 0
   end
 end

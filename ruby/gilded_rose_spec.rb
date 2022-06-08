@@ -128,5 +128,39 @@ describe GildedRose do
       expect(items[0].sell_in).to eq 5
     end
   end
+
+  context 'when the item name is Conjured Mana Cake' do
+    let(:items) { [Item.new('Conjured Mana Cake', sell_in, quality)] }
+
+    context 'when the sell-in day is above 0' do
+      let(:sell_in) { 10 }
+      let(:quality) { 20 }
+
+      it 'reduces the quality by two' do
+        GildedRose.new(items).update_quality
+        expect(items[0].quality).to eq 18
+      end
+    end
+
+    context 'when the sell-in day is at or below 0' do
+      let(:sell_in) { -1 }
+      let(:quality) { 20 }
+
+      it 'reduces the quality by four' do
+        GildedRose.new(items).update_quality
+        expect(items[0].quality).to eq 16
+      end
+    end
+
+    context 'when the quality is 0' do
+      let(:sell_in) { 5 }
+      let(:quality) { 0 }
+
+      it 'does not alter the quality' do
+        GildedRose.new(items).update_quality
+        expect(items[0].quality).to eq 0
+      end
+    end
+  end
 end
 # rubocop:enable Metrics/BlockLength
