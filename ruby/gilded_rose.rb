@@ -70,14 +70,15 @@ class BackstageUpdater < ItemUpdater
 
   def update
     item.sell_in -= 1
-    sell_in = item.sell_in
-    if sell_in <= 0
-      item.quality = 0
-      return
-    end
-    item.quality += 1
-    item.quality += 1 if sell_in <= 10
-    item.quality += 1 if sell_in <= 3
+    return if item.quality >= 50
+
+    return item.quality = 0 if item.sell_in <= 0
+
+    item.quality += case item.sell_in
+                    when 1..3 then 3
+                    when 4..10 then 2
+                    else 1
+                    end
   end
 end
 
