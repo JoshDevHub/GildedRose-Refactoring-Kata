@@ -38,12 +38,14 @@ class ItemUpdater
   end
 
   def self.handles?(name)
-    name == 'Sulfuras, Hand of Ragnaros'
+    name == self::NAME
   end
 
   def initialize(item)
     @item = item
   end
+
+  NAME = 'Sulfuras, Hand of Ragnaros'
 
   def update; end
 
@@ -54,9 +56,7 @@ end
 
 # update brie items
 class BrieUpdater < ItemUpdater
-  def self.handles?(name)
-    name == 'Aged Brie'
-  end
+  NAME = 'Aged Brie'
 
   def update
     item.sell_in -= 1
@@ -66,9 +66,7 @@ end
 
 # update backstage items
 class BackstageUpdater < ItemUpdater
-  def self.handles?(name)
-    name == 'Backstage passes to a TAFKAL80ETC concert'
-  end
+  NAME = 'Backstage passes to a TAFKAL80ETC concert'
 
   def update
     item.sell_in -= 1
@@ -98,9 +96,7 @@ end
 
 # new conjured item updater
 class ConjuredUpdater < ItemUpdater
-  def self.handles?(name)
-    name == 'Conjured Mana Cake'
-  end
+  NAME = 'Conjured Mana Cake'
 
   def update
     item.sell_in -= 1
