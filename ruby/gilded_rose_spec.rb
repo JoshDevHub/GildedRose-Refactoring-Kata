@@ -50,5 +50,83 @@ describe GildedRose do
       end
     end
   end
+
+  context 'when the item name is Aged Brie' do
+    let(:items) { [Item.new('Aged Brie', sell_in, quality)] }
+    let(:sell_in) { 10 }
+
+    context 'when the quality is under 50' do
+      let(:quality) { 20 }
+
+      it 'increases the quality of the item' do
+        GildedRose.new(items).update_quality
+        expect(items[0].quality).to eq 21
+      end
+    end
+
+    context 'when the quality is 50 or over' do
+      let(:quality) { 50 }
+
+      it 'does not change the quality' do
+        GildedRose.new(items).update_quality
+        expect(items[0].quality).to eq 50
+      end
+    end
+  end
+
+  context 'when the item name indicates a Backstage pass' do
+    let(:items) { [Item.new('Backstage passes to a TAFKAL80ETC concert', sell_in, quality)] }
+    let(:quality) { 10 }
+
+    context 'when the sell in is greater than 10' do
+      let(:sell_in) { 12 }
+
+      it 'increases the quality by one' do
+        GildedRose.new(items).update_quality
+        expect(items[0].quality).to eq 11
+      end
+    end
+
+    context 'when the sell in day is between 4 and 10' do
+      let(:sell_in) { 10 }
+
+      it 'increases the quality by two' do
+        GildedRose.new(items).update_quality
+        expect(items[0].quality).to eq 12
+      end
+    end
+
+    context 'when the sell in day is between 3 and 1' do
+      let(:sell_in) { 3 }
+
+      it 'increases the quality by three' do
+        GildedRose.new(items).update_quality
+        expect(items[0].quality).to eq 13
+      end
+    end
+
+    context 'when the sell in day is zero or less' do
+      let(:sell_in) { 0 }
+
+      it 'sets the quality equal to 0' do
+        GildedRose.new(items).update_quality
+        expect(items[0].quality).to eq 0
+      end
+    end
+  end
+
+  context 'when the item name is Sulfuras, Hand of Ragnaros' do
+    let(:items) { [Item.new('Sulfuras, Hand of Ragnaros', 5, 80)] }
+
+    it 'does not effect the quality' do
+      GildedRose.new(items).update_quality
+      expect(items[0].quality).to eq 80
+    end
+
+    it 'does not effect the sell in' do
+      GildedRose.new(items).update_quality
+      expect(items[0].sell_in).to eq 5
+    end
+  end
 end
 # rubocop:enable Metrics/BlockLength
